@@ -1,0 +1,17 @@
+clang \
+  -Os \
+  -DCLAY_WASM \
+  -mbulk-memory \
+  --target=wasm32 \
+  -nostdlib \
+  -Wall \
+  -Werror \
+  -Wl,--strip-all \
+  -Wl,--export-dynamic \
+  -Wl,--no-entry \
+  -Wl,--initial-memory=6553600 \
+  -Wl,--max-memory=65536000 \
+  -Wl,--export=__heap_base \
+  -Wl,--export=__data_end \
+  -Wl,--export-table \
+  -o clay.wasm main.c

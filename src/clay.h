@@ -990,20 +990,20 @@ typeName *arrayName##Slice_Get(arrayName##Slice *slice, int32_t index) {        
 }                                                                                                               \
                                                                                                                 \
 typeName arrayName##_RemoveSwapback(arrayName *array, int32_t index) {                                          \
-	if (Clay__Array_RangeCheck(index, array->length)) {                                                         \
-		array->length--;                                                                                        \
-		typeName removed = array->internalArray[index];                                                         \
-		array->internalArray[index] = array->internalArray[array->length];                                      \
-		return removed;                                                                                         \
-	}                                                                                                           \
-	return typeName##_DEFAULT;                                                                                  \
+    if (Clay__Array_RangeCheck(index, array->length)) {                                                         \
+        array->length--;                                                                                        \
+        typeName removed = array->internalArray[index];                                                         \
+        array->internalArray[index] = array->internalArray[array->length];                                      \
+        return removed;                                                                                         \
+    }                                                                                                           \
+    return typeName##_DEFAULT;                                                                                  \
 }                                                                                                               \
                                                                                                                 \
 void arrayName##_Set(arrayName *array, int32_t index, typeName value) {                                         \
-	if (Clay__Array_RangeCheck(index, array->capacity)) {                                                       \
-		array->internalArray[index] = value;                                                                    \
-		array->length = index < array->length ? array->length : index + 1;                                      \
-	}                                                                                                           \
+    if (Clay__Array_RangeCheck(index, array->capacity)) {                                                       \
+        array->internalArray[index] = value;                                                                    \
+        array->length = index < array->length ? array->length : index + 1;                                      \
+    }                                                                                                           \
 }                                                                                                               \
 
 #define CLAY__ARRAY_DEFINE(typeName, arrayName)     \
@@ -1301,9 +1301,9 @@ Clay_String Clay__WriteStringToCharBuffer(Clay__charArray *buffer, Clay_String s
 }
 
 #ifdef CLAY_WASM
-    __attribute__((import_module("clay"), import_name("measureTextFunction"))) Clay_Dimensions Clay__MeasureText(Clay_StringSlice text, Clay_TextElementConfig *config, void *userData);
-    __attribute__((import_module("clay"), import_name("queryScrollOffsetFunction"))) Clay_Vector2 Clay__QueryScrollOffset(uint32_t elementId, void *userData);
-#else
+     __attribute__((import_module("clay"), import_name("measureTextFunction"))) Clay_Dimensions Clay__MeasureText(Clay_StringSlice text, Clay_TextElementConfig *config, void *userData);
+     __attribute__((import_module("clay"), import_name("queryScrollOffsetFunction"))) Clay_Vector2 Clay__QueryScrollOffset(uint32_t elementId, void *userData);
+ #else
     Clay_Dimensions (*Clay__MeasureText)(Clay_StringSlice text, Clay_TextElementConfig *config, void *userData);
     Clay_Vector2 (*Clay__QueryScrollOffset)(uint32_t elementId, void *userData);
 #endif
@@ -3939,7 +3939,7 @@ void Clay_SetPointerState(Clay_Vector2 position, bool isPointerDown) {
                 Clay_BoundingBox elementBox = mapItem->boundingBox;
                 elementBox.x -= root->pointerOffset.x;
                 elementBox.y -= root->pointerOffset.y;
-                if ((Clay__PointIsInsideRect(position, elementBox)) && (clipElementId == 0 || (Clay__PointIsInsideRect(position, clipItem->boundingBox)))) {
+                if ((Clay__PointIsInsideRect(position, elementBox)) && (clipElementId == 0 || (Clay__PointIsInsideRect(position, clipItem->boundingBox)) || context->externalScrollHandlingEnabled)) {
                     if (mapItem->onHoverFunction) {
                         mapItem->onHoverFunction(mapItem->elementId, context->pointerInfo, mapItem->hoverFunctionUserData);
                     }
